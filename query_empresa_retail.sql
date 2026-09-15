@@ -1,5 +1,4 @@
 /*Tabla canal*/
-
 /*insertar C*/
 insert into canal(can_nombre,can_tipo)
 values ('Facebook','Buscador');
@@ -13,11 +12,10 @@ update canal
 set can_nombre = 'Instagram', can_tipo = 'Red Social'
 where can_id_canal = 1;
 
-/*BORRAR*/
+/*BORRAR D*/
 delete from canal where can_id_canal = 1;
 
 /*Tabla Clientes*/
-
 /*INSERTAR 5 REGISTROS (C)*/
 insert into cliente(cli_nombre, cli_apellido, cli_correo, cli_telefono, cli_ciudad, cli_fecha_registro)
 values 
@@ -41,8 +39,8 @@ where cli_id_cliente = 1;
 /* Borramos el cliente ID 5 */
 delete from cliente where cli_id_cliente = 5;
 
-/*TABLA CAMPANIA*/
 
+/*TABLA CAMPANIA*/
 /*INSERTAR 5 REGISTROS (C)*/
 /*can_id_canal = 1 no existe*/
 insert into campania(cam_nombre, cam_presupuesto, cam_fecha_inicio, cam_fecha_final, canal_can_id_canal)
@@ -67,16 +65,20 @@ where cam_id_campania = 1;
 /* Borramos la campaña con ID 5 */
 delete from campania where cam_id_campania = 5;
 
-/*TABLA CONVERSION*/
 
+/*TABLA CONVERSION*/
 /*INSERTAR 5 REGISTROS (C)*/
+
+ALTER TABLE conversion MODIFY con_tipo VARCHAR(50);
+ALTER TABLE conversion MODIFY con_tipo ENUM('Compra', 'Suscripcion', 'Descarga', 'venta', 'Registro');
+ALTER TABLE conversion MODIFY con_valor DECIMAL(10,2);
 insert into conversion(con_tipo, con_valor, con_fecha, cliente_cli_id_cliente)
 values 
 ('Compra', 150.50, '2024-05-20', 1),
 ('Suscripcion', 29.99, '2024-05-21', 2),
-('Descarga', 0.00, '2024-05-22', 3),con_tipo
-('Compra', 89.99, '2024-05-23', 4),
-('Registro', 0.00, '2024-05-24', 2);
+('Descarga', 0.00, '2024-05-22', 3),
+('venta', 89.99, '2024-05-23', 4),
+('Registro', 0.00, '2024-05-24', 3);
 
 /*LEER (R)*/
 select con_id_conversion, con_tipo, con_valor, con_fecha 
@@ -91,3 +93,34 @@ where con_id_conversion = 1;
 /*BORRAR (D)*/
 /* Borramos la conversión con ID 5 */
 delete from conversion where con_id_conversion = 5;
+
+/*TABLA INTERACCION*/
+ALTER TABLE interaccion MODIFY int_tipo VARCHAR(50);
+/*INSERTAR 5 REGISTROS (C)*/
+/* Asumiendo que las campañas y clientes con IDs 1, 2, 3, 4 existen */
+insert into interaccion(int_tipo, int_fecha, campania_cam_id_campania, cliente_cli_id_cliente)
+values 
+('Click', '2024-05-21', 1, 1),
+('Vista', '2024-05-21', 1, 2),
+('Llamada', '2024-05-22', 2, 3),
+('Click', '2024-05-22', 2, 4),
+('Vista', '2024-05-23', 3, 1);
+
+/*LEER (R)*/
+select int_id_interaccion, int_tipo, int_fecha, campania_cam_id_campania, cliente_cli_id_cliente 
+from interaccion;
+
+/*ACTUALIZAR (U)*/
+/* Actualizamos la interacción con ID 1 */
+update interaccion
+set int_tipo = 'Llamada Larga', int_fecha = '2024-05-25'
+where int_id_interaccion = 1;
+
+/*BORRAR (D)*/
+/* Borramos la interacción con ID 2 */
+delete from interaccion where int_id_interaccion = 2;
+
+
+
+
+
